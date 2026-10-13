@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1a1215;color:#f6efe7;font-family:'Manrope','Hind Siliguri',sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+a:hover{color:#d4b483}
+*{box-sizing:border-box}
+::selection{background:#d4b483;color:#1a1215}
+html,body{cursor:url(assets/cursor-brush.svg?v=3) 10 7, auto}
+a,button,select,label,[role=button]{cursor:url(assets/cursor-brush-active.svg?v=3) 10 7, pointer !important}
+@keyframes nefSpin{to{transform:rotate(360deg)}}
+@keyframes nefDrift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(8vw,-6vh) scale(1.15)}100%{transform:translate(-6vw,5vh) scale(0.95)}}
+</style>
+<script>
+(function(){
+  var DARK_FILTER='brightness(0) saturate(100%) invert(7%) sepia(18%) saturate(1200%) hue-rotate(290deg)';
+  function upd(){
+    var h=document.querySelector('[data-adaptive-header]'); if(!h) return;
+    var y=h.getBoundingClientRect().height/2, theme=h.getAttribute('data-default')||'light';
+    var secs=document.querySelectorAll('[data-theme]');
+    for(var i=0;i<secs.length;i++){var r=secs[i].getBoundingClientRect(); if(r.top<=y&&r.bottom>=y){theme=secs[i].getAttribute('data-theme');break;}}
+    if(h.__t===theme) return; h.__t=theme;
+    h.style.color=theme==='dark'?'#ffffff':'#1a1215';
+    var ims=h.querySelectorAll('img[data-ico]'); for(var j=0;j<ims.length;j++) ims[j].style.filter=theme==='dark'?'none':DARK_FILTER;
+  }
+  window.addEventListener('scroll',upd,{passive:true}); window.addEventListener('resize',upd); setInterval(upd,400);
+  var lasty=window.scrollY, hidet=null;
+  function hdr(){var h=document.querySelector('[data-adaptive-header]'); if(!h) return; h.style.transition='color 300ms, transform 450ms cubic-bezier(.2,.7,.2,1)';
+    var y=window.scrollY; if(y<120){h.style.transform='none'; clearTimeout(hidet);} else if(y>lasty+4){h.style.transform='translateY(-110%)'; clearTimeout(hidet);} else if(y<lasty-4){h.style.transform='none'; clearTimeout(hidet); hidet=setTimeout(function(){ if(window.scrollY>120) h.style.transform='translateY(-110%)'; },2600);}
+    lasty=y;}
+  window.addEventListener('scroll',hdr,{passive:true});
+})();
+</script>
+</helmet>
+<div style="min-height:100vh;background-color:#1a1215;background-image:url(assets/grain-dark.svg);overflow-x:hidden">
+
+  <div style="position:fixed;inset:0;z-index:100;background:#1a1215;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:transform 1100ms cubic-bezier(.77,0,.18,1);transform:translateY({{ introY }});pointer-events:{{ introPe }}">
+    <img src="assets/logo.jpg" alt="" style="width:92px;height:92px;border-radius:999px;object-fit:cover;transition:opacity 700ms, transform 900ms cubic-bezier(.2,.7,.2,1);opacity:{{ introLogoO }};transform:scale({{ introLogoS }})"></img>
+    <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(56px,8vw,112px);line-height:1;transition:opacity 700ms 150ms, transform 900ms 150ms cubic-bezier(.2,.7,.2,1);opacity:{{ introLogoO }};transform:translateY({{ introTextY }})">Nefertiti</div>
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.3em;color:#d4b483;transition:opacity 700ms 300ms;opacity:{{ introLogoO }}">HAND-PAINTED SAREES</div>
+  </div>
+
+  <div ref="{{ cursorRef }}" style="position:fixed;z-index:60;width:96px;height:96px;margin:-48px 0 0 -48px;border-radius:999px;background:linear-gradient(135deg,#ecd8ad 0%,#c9a46a 48%,#e6cc98 100%);color:#1a1215;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;letter-spacing:0.16em;pointer-events:none;transition:transform 350ms cubic-bezier(.2,.7,.2,1);transform:scale({{ cursorScale }})">VIEW</div>
+
+  <header data-adaptive-header="1" data-default="dark" style="position:fixed;top:0;left:0;right:0;z-index:30;background:transparent;color:#fff;transition:color 300ms">
+    <div style="max-width:1440px;margin:0 auto;padding:16px 28px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px">
+      <nav style="display:flex;gap:26px;flex-wrap:wrap;font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase">
+        <a href="Shop.dc.html?cat=Sarees">Sarees</a>
+        <a href="Shop.dc.html?cat=Panjabi">Panjabi</a>
+        <a href="Shop.dc.html?cat=Family">Family set</a>
+      </nav>
+      <a href="Home.dc.html" style="display:flex;align-items:center;gap:12px">
+        <img src="assets/logo.jpg" alt="Nefertiti logo" style="width:44px;height:44px;border-radius:999px;object-fit:cover"></img>
+        <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;line-height:1">Nefertiti</span>
+      </a>
+      <div style="display:flex;gap:14px;justify-content:flex-end;align-items:center">
+        <a href="https://www.facebook.com/foring.nefertiti" target="_blank" rel="noopener" aria-label="Facebook" style="width:36px;height:36px;border-radius:999px;display:flex;align-items:center;justify-content:center;transition:background 250ms" style-hover="background:#1877F2"><img data-ico="1" src="https://cdn.simpleicons.org/facebook/ffffff" alt="" style="width:17px;height:17px"></img></a>
+        <a href="#" aria-label="Instagram" style="width:36px;height:36px;border-radius:999px;display:flex;align-items:center;justify-content:center;transition:background 250ms" style-hover="background:#E4405F"><img data-ico="1" src="https://cdn.simpleicons.org/instagram/ffffff" alt="" style="width:17px;height:17px"></img></a>
+        <a href="Shop.dc.html" style="display:flex;gap:8px;align-items:center;background:linear-gradient(135deg,#ecd8ad 0%,#c9a46a 48%,#e6cc98 100%);color:#1a1215;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:0.04em;box-shadow:inset 0 1px 0 #ffffff66"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M3 4h2l2.4 10.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 8H6.2"></path><circle cx="9.5" cy="19" r="1.4"></circle><circle cx="17" cy="19" r="1.4"></circle></svg>CART <span style="background:#1a1215;color:#d4b483;border-radius:999px;min-width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:11px">{{ cartCount }}</span></a>
+      </div>
+    </div>
+  </header>
+
+  <section style="position:relative;overflow:hidden;min-height:100vh;display:flex;flex-direction:column">
+    <sc-for list="{{ panels }}" as="b" hint-placeholder-count="0">
+      <img src="{{ b.src }}" alt="" style="position:absolute;left:-10%;top:-10%;width:120%;height:120%;object-fit:cover;filter:blur(100px) saturate(1.6);transition:opacity 1400ms;opacity:{{ b.glowO }};pointer-events:none"></img>
+    </sc-for>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,#1a1215a6 0%,#1a121580 55%,#1a1215 100%);pointer-events:none"></div>
+    <div style="position:absolute;width:min(78vw,980px);height:min(78vw,980px);left:-18vw;top:50%;margin-top:calc(min(78vw,980px) / -2);opacity:0.16;pointer-events:none">{{ alpanaSpin }}</div>
+    <div style="position:relative;flex:1;width:100%;max-width:1440px;margin:0 auto;padding:104px 28px 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:48px;align-items:center">
+      <div style="display:flex;flex-direction:column;gap:30px">
+        <div data-reveal="1">
+          <div style="display:flex;align-items:center;gap:12px;font-size:12px;font-weight:600;letter-spacing:0.24em;color:#d4b483;margin-bottom:18px"><span style="width:40px;height:1px;background:#d4b483"></span>HAND-PAINTED SAREES</div>
+          <h1 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(64px,7.6vw,136px);line-height:0.9;margin:0;letter-spacing:-0.02em">Your own story,<br><span style="font-style:italic;color:#d4b483;white-space:nowrap">in colour</span></h1>
+        </div>
+        <div data-reveal="1" style="display:flex;flex-direction:column;gap:22px;max-width:460px">
+          <div style="font-size:20px">রঙে রঙে নিজের গল্প</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <a href="Shop.dc.html" style="background:linear-gradient(135deg,#ecd8ad 0%,#c9a46a 48%,#e6cc98 100%);color:#1a1215;box-shadow:inset 0 1px 0 #ffffff66,0 10px 28px #c9a46a33;padding:17px 30px;border-radius:999px;font-size:14px;font-weight:700;letter-spacing:0.06em" style-hover="background:#f6efe7;color:#1a1215">SHOP THE COLLECTION →</a>
+            <a href="#" style="display:inline-flex;align-items:center;gap:10px;border:1px solid #ffffff4d;color:#fff;padding:17px 24px;border-radius:999px;font-size:14px;font-weight:600;backdrop-filter:blur(6px)" style-hover="background:#25D366;border-color:#25D366;color:#fff"><img src="https://cdn.simpleicons.org/whatsapp/f6efe7" alt="" style="width:18px;height:18px"></img>WhatsApp</a>
+          </div>
+          <div style="display:flex;gap:6px;max-width:320px;margin-top:6px">
+            <sc-for list="{{ panels }}" as="b" hint-placeholder-count="0">
+              <button onClick="{{ b.pick }}" aria-label="{{ b.name }}" style="flex:1;height:20px;padding:0;border:none;background:none;cursor:pointer;display:flex;align-items:center"><span style="display:block;width:100%;height:2px;background:{{ b.dash }};transition:background 400ms"></span></button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <div onMouseEnter="{{ heroEnter }}" onMouseLeave="{{ heroLeave }}" style="position:relative;display:flex;gap:10px;height:min(84vh,860px);min-height:520px">
+        <sc-for list="{{ panels }}" as="b" hint-placeholder-count="0">
+          <a href="{{ b.href }}" onMouseEnter="{{ b.pick }}" style="position:relative;flex:{{ b.flex }};min-width:56px;border-radius:6px;overflow:hidden;transition:flex 900ms cubic-bezier(.77,0,.18,1);display:block;color:#fff">
+            <img src="{{ b.src }}" alt="{{ b.name }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ b.pos }};transition:transform 1400ms cubic-bezier(.2,.7,.2,1), filter 700ms;transform:scale({{ b.scale }});filter:{{ b.filter }}"></img>
+            <span style="position:absolute;inset:0;background:linear-gradient(0deg,#1a1215d9 0%,#1a121500 55%);pointer-events:none"></span>
+            <span style="position:absolute;left:50%;bottom:24px;transform:translateX(-50%) rotate(180deg);writing-mode:vertical-rl;font-family:'Instrument Serif',serif;font-style:italic;font-size:26px;white-space:nowrap;transition:opacity 400ms;opacity:{{ b.labelO }}">{{ b.name }}</span>
+            <span style="position:absolute;left:24px;right:24px;bottom:24px;display:flex;flex-direction:column;gap:14px;min-width:0;transition:opacity 500ms 300ms, transform 700ms 200ms cubic-bezier(.2,.7,.2,1);opacity:{{ b.infoO }};transform:translateY({{ b.infoY }})">
+              <span style="display:flex;flex-direction:column;gap:6px;min-width:0">
+                <span style="font-size:11px;font-weight:700;letter-spacing:0.2em;color:#d4b483">{{ b.num }} · {{ b.fabric }}</span>
+                <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(36px,3.4vw,58px);line-height:0.95;overflow-wrap:anywhere">{{ b.name }}</span>
+              </span>
+              <span style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+                <span style="font-size:14px">{{ b.bn }} · {{ b.price }}</span>
+                <span style="width:48px;height:48px;border-radius:999px;background:#f6efe7;color:#1a1215;display:flex;align-items:center;justify-content:center;font-size:18px;flex:none">→</span>
+              </span>
+            </span>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative;overflow:hidden">
+    <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden">{{ ambient }}</div>
+    <div ref="{{ manifestoRef }}" style="position:relative;max-width:1440px;margin:0 auto;padding:130px 28px 140px;display:grid;grid-template-columns:minmax(0,1fr);gap:64px;align-items:center">
+      <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center">
+        <div data-reveal="1" style="font-size:12px;font-weight:600;letter-spacing:0.24em;color:#d4b483;margin-bottom:36px;display:flex;align-items:center;justify-content:center;gap:12px"><span style="width:28px;height:1px;background:#d4b483"></span><span style="width:6px;height:6px;transform:rotate(45deg);background:#d4b483;flex:none"></span>OUR PROMISE</div>
+        <p style="position:relative;font-family:'Instrument Serif',serif;font-size:clamp(40px,5.2vw,86px);line-height:1.1;margin:0;letter-spacing:-0.01em;display:flex;flex-wrap:wrap;justify-content:center;column-gap:0.24em">
+          <sc-for list="{{ words }}" as="w" hint-placeholder-count="12">
+            <span data-w="1" style="display:inline-block;opacity:0.14;transition:opacity 250ms, text-shadow 300ms, filter 300ms, transform 400ms;font-style:{{ w.style }};color:{{ w.color }}">{{ w.t }}</span>
+          </sc-for>
+        </p>
+      </div>
+      <div data-reveal="1" style="display:flex;flex-direction:column;gap:22px;width:100%;max-width:1120px;margin:0 auto">
+        <div style="position:relative;aspect-ratio:16/7;width:100%;border-radius:8px;overflow:hidden;background:#2a1f1c;box-shadow:0 40px 90px #00000080,0 0 0 1px #d4b48366,0 0 0 8px #1a1215,0 0 0 9px #d4b48340">
+          <canvas ref="{{ studioRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding:0 4px">
+          <span style="font-size:14px;color:#cbbfb3">Every motif is painted by hand, one petal at a time.</span>
+          <a href="Shop.dc.html" style="font-size:13px;font-weight:700;letter-spacing:0.12em;color:#d4b483;border-bottom:1px solid #d4b48380;padding-bottom:3px">SHOP HAND-PAINTED SAREES →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-theme="light" style="position:relative;overflow:hidden;background-color:#f6efe7;background-image:url(assets/grain-light.svg);color:#1a1215">
+    <div style="position:absolute;inset:22px;border:1px solid #c9a46a59;pointer-events:none"><span style="position:absolute;left:-4px;top:-4px;width:7px;height:7px;transform:rotate(45deg);background:#d4b483"></span><span style="position:absolute;right:-4px;top:-4px;width:7px;height:7px;transform:rotate(45deg);background:#d4b483"></span><span style="position:absolute;left:-4px;bottom:-4px;width:7px;height:7px;transform:rotate(45deg);background:#d4b483"></span><span style="position:absolute;right:-4px;bottom:-4px;width:7px;height:7px;transform:rotate(45deg);background:#d4b483"></span></div>
+    <div style="position:absolute;width:70vw;height:70vw;right:-25vw;top:-30vw;border-radius:999px;background:radial-gradient(#d4b48352,transparent 62%);pointer-events:none"></div>
+    <div style="position:relative;max-width:1440px;margin:0 auto;padding:80px 28px 80px">
+      <div onMouseLeave="{{ gridLeave }}" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:16px;align-items:stretch;height:calc(100vh - 140px);min-height:640px;max-height:920px">
+        <div style="position:relative;height:100%;min-height:0;border-radius:8px;overflow:hidden;background:#2a1f1c;box-shadow:0 30px 80px #1a121540">
+          <sc-for list="{{ featImgs }}" as="f" hint-placeholder-count="0">
+            <img src="{{ f.src }}" alt="{{ f.name }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%;transition:opacity 700ms, transform 1800ms cubic-bezier(.2,.7,.2,1);opacity:{{ f.o }};transform:scale({{ f.s }})"></img>
+          </sc-for>
+          <div style="position:absolute;inset:0;background:linear-gradient(0deg,#1a1215f2 0%,#1a121599 32%,#1a121500 60%);pointer-events:none"></div>
+          <div style="position:absolute;inset:12px;border:1px solid #d4b483b3;border-radius:4px;pointer-events:none"><span style="position:absolute;left:-4px;top:-4px;width:7px;height:7px;transform:rotate(45deg);background:#d4b483"></span><span style="position:absolute;right:-4px;top:-4px;width:7px;height:7px;transform:rotate(45deg);background:#d4b483"></span><span style="position:absolute;left:-4px;bottom:-4px;width:7px;height:7px;transform:rotate(45deg);background:#d4b483"></span><span style="position:absolute;right:-4px;bottom:-4px;width:7px;height:7px;transform:rotate(45deg);background:#d4b483"></span></div>
+          <div style="position:absolute;inset:18px;border:1px solid #d4b48340;border-radius:2px;pointer-events:none"></div>
+          <div style="position:absolute;left:38px;right:38px;bottom:38px;display:flex;flex-direction:column;gap:14px;color:#f6efe7">
+            <span style="font-size:12px;font-weight:700;letter-spacing:0.2em;color:#d4b483">{{ feat.fabricUp }}</span>
+            <a href="{{ feat.href }}" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(56px,6vw,108px);line-height:0.9">{{ feat.name }}</a>
+            <span style="font-size:15px">{{ feat.bn }} · <span style="font-weight:700">{{ feat.price }}</span></span>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">
+              <button onClick="{{ feat.add }}" style="height:52px;padding:0 28px;border:none;border-radius:999px;background:linear-gradient(135deg,#ecd8ad 0%,#c9a46a 48%,#e6cc98 100%);color:#1a1215;font-family:inherit;font-size:13px;font-weight:700;letter-spacing:0.08em;cursor:pointer" style-hover="background:#f6efe7">+ ADD TO CART</button>
+              <a href="{{ feat.href }}" style="height:52px;padding:0 24px;border-radius:999px;border:1px solid #f6efe780;display:flex;align-items:center;font-size:13px;font-weight:700;letter-spacing:0.08em" style-hover="background:#f6efe7;color:#1a1215">DETAILS →</a>
+              <a href="#" aria-label="Order on WhatsApp" style="width:52px;height:52px;border-radius:999px;border:1px solid #f6efe780;display:flex;align-items:center;justify-content:center" style-hover="background:#25D366;border-color:#25D366"><img src="https://cdn.simpleicons.org/whatsapp/f6efe7" alt="" style="width:20px;height:20px"></img></a>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto repeat(3,minmax(0,1fr));gap:12px;height:100%;min-height:0">
+          <div style="grid-column:1 / -1;display:flex;flex-direction:column;gap:18px;padding:2px 0 8px">
+            <div data-reveal="1">
+          <div style="font-size:12px;font-weight:600;letter-spacing:0.24em;color:#7a2944;margin-bottom:16px;display:flex;align-items:center;gap:12px"><span style="width:28px;height:1px;background:#7a2944"></span><span style="width:6px;height:6px;transform:rotate(45deg);background:#7a2944;flex:none"></span>JUST IN</div>
+          <h2 ref="{{ arrRef }}" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(44px,4.4vw,76px);line-height:1;margin:0;display:flex;flex-wrap:wrap;overflow:hidden;padding-bottom:0.08em">
+            <sc-for list="{{ arrLetters }}" as="l" hint-placeholder-count="11">
+              <span style="display:inline-block;white-space:pre;font-style:{{ l.st }};color:{{ l.col }};transition:transform 900ms cubic-bezier(.2,.8,.2,1) {{ l.d }}, opacity 700ms ease {{ l.d }};transform:translateY({{ l.y }}) rotate({{ l.r }});opacity:{{ l.o }}">{{ l.ch }}</span>
+            </sc-for>
+          </h2>
+          <div style="display:flex;align-items:center;gap:14px;margin-top:10px;flex-wrap:wrap;font-size:14px;color:#5c4e48"><span style="font-size:16px;color:#1a1215">নতুন শাড়ি</span><span style="width:5px;height:5px;transform:rotate(45deg);background:#c9a46a"></span><span>Each piece is one of a kind. Hover to see it up close.</span></div>
+        </div>
+        <div data-reveal="1" style="display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+            <button onClick="{{ t.select }}" style="border:1px solid {{ t.border }};background:{{ t.bg }};color:{{ t.fg }};padding:12px 20px;border-radius:999px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all 200ms">{{ t.label }}</button>
+          </sc-for>
+        </div>
+          </div>
+          <sc-for list="{{ tiles }}" as="p" hint-placeholder-count="0">
+            <button onMouseEnter="{{ p.enter }}" onMouseLeave="{{ p.leave }}" onClick="{{ p.go }}" style="position:relative;min-height:0;border:none;padding:0;border-radius:8px;overflow:hidden;cursor:pointer;background:#ece2d6;text-align:left;font-family:inherit;transition:box-shadow 300ms, opacity 300ms;box-shadow:0 0 0 2px {{ p.ring }};opacity:{{ p.dim }}">
+              <img src="{{ p.src }}" alt="{{ p.name }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%;transition:transform 900ms cubic-bezier(.2,.7,.2,1);transform:scale({{ p.scale }})"></img>
+              <span style="position:absolute;inset:0;background:linear-gradient(0deg,#1a1215d9 0%,#1a121500 50%);pointer-events:none"></span>
+              <span style="position:absolute;inset:8px;border:1px solid #f6efe759;border-radius:4px;pointer-events:none"></span>
+              <span style="position:absolute;top:12px;left:12px;background:#f6efe7;color:#1a1215;padding:5px 11px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:0.12em">{{ p.tag }}</span>
+              <span style="position:absolute;left:16px;right:16px;bottom:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:8px;color:#f6efe7">
+                <span style="font-family:'Instrument Serif',serif;font-size:22px;line-height:1">{{ p.name }}</span>
+                <span style="font-size:13px;font-weight:700;white-space:nowrap">{{ p.price }}</span>
+              </span>
+            </button>
+          </sc-for>
+          <a href="Shop.dc.html" style="grid-column:span 2;border-radius:8px;background:#1a1215;color:#f6efe7;padding:26px;display:flex;flex-direction:column;justify-content:space-between;min-height:0" style-hover="background:#7a2944;color:#f6efe7">
+            <span style="font-size:11px;font-weight:700;letter-spacing:0.18em;color:#d4b483">FULL COLLECTION</span>
+            <span style="font-family:'Instrument Serif',serif;font-size:38px;line-height:1">See all {{ totalCount }} pieces →</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative;height:100vh;min-height:620px;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center">
+    <div data-parallax="0.25" style="position:absolute;left:0;right:0;top:-15%;bottom:-15%"><img src="assets/water.jpg" alt="" style="width:100%;height:100%;object-fit:cover"></img></div>
+    <div style="position:absolute;inset:0;background:#1a1215a6;pointer-events:none"></div>
+    <div style="position:relative;max-width:1100px;padding:0 28px;display:flex;flex-direction:column;align-items:center;gap:36px">
+      <div data-reveal="1" style="font-size:12px;font-weight:600;letter-spacing:0.24em;color:#d4b483;display:flex;align-items:center;gap:12px"><span style="width:28px;height:1px;background:#d4b483"></span><span style="width:6px;height:6px;transform:rotate(45deg);background:#d4b483;flex:none"></span>WORN BY YOU</div>
+      <h2 data-reveal="1" style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(56px,8vw,140px);line-height:0.9;margin:0">The <span style="font-style:italic;color:#d4b483">Nefertiti</span> moments</h2>
+      <a data-reveal="1" href="https://www.facebook.com/foring.nefertiti" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;border:1px solid #f6efe7;padding:18px 32px;border-radius:999px;font-size:14px;font-weight:700;letter-spacing:0.06em" style-hover="background:#1877F2;border-color:#1877F2;color:#fff"><img src="https://cdn.simpleicons.org/facebook/f6efe7" alt="" style="width:18px;height:18px"></img>More on Facebook →</a>
+    </div>
+  </section>
+
+  <section style="position:relative;overflow:hidden">
+    <img src="assets/p-mayur.jpg" alt="" style="position:absolute;width:55vw;height:55vw;right:-15vw;top:0;object-fit:cover;border-radius:999px;filter:blur(110px) saturate(1.5);opacity:0.35;pointer-events:none"></img>
+    <img src="assets/p-holud.jpg" alt="" style="position:absolute;width:50vw;height:50vw;left:-20vw;bottom:-10%;object-fit:cover;border-radius:999px;filter:blur(110px) saturate(1.5);opacity:0.3;pointer-events:none"></img>
+    <div style="position:absolute;inset:0;background:url(assets/kantha-v-gold.svg) repeat center/140px 72px;opacity:0.18;pointer-events:none"></div>
+    <div style="position:relative;max-width:1440px;margin:0 auto;padding:110px 28px 120px">
+      <div ref="{{ momentsRef }}" style="position:relative;height:clamp(600px,54vw,800px)">
+        <sc-for list="{{ moments }}" as="m" hint-placeholder-count="0">
+          <div onMouseEnter="{{ m.enter }}" onMouseLeave="{{ m.leave }}" style="position:absolute;left:{{ m.x }};top:{{ m.y }};width:clamp(150px,17vw,250px);z-index:{{ m.z }};transition:left 1000ms cubic-bezier(.2,.7,.2,1) {{ m.delay }}, top 1000ms cubic-bezier(.2,.7,.2,1) {{ m.delay }}, transform 500ms cubic-bezier(.2,.7,.2,1), box-shadow 400ms;transform:rotate({{ m.rot }}) scale({{ m.sc }});background:#f6efe7;padding:10px 10px 0;border-radius:3px;box-shadow:{{ m.shadow }}">
+            <div style="aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:#2a1f1c"><img src="{{ m.src }}" alt="{{ m.name }}" style="width:100%;height:100%;object-fit:cover;object-position:50% 25%;display:block"></img></div>
+            <div style="padding:10px 4px 14px;display:flex;justify-content:space-between;align-items:baseline;gap:8px;color:#1a1215">
+              <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:22px;line-height:1">{{ m.name }}</span>
+              <span style="font-size:9px;font-weight:700;letter-spacing:0.16em;color:#7a2944;white-space:nowrap">{{ m.tag }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;justify-content:center;margin-top:28px">
+        <button onClick="{{ shuffle }}" style="display:inline-flex;align-items:center;gap:10px;border:1px solid #d4b48399;background:#1a1215b3;color:#f6efe7;padding:15px 26px;border-radius:999px;font-family:inherit;font-size:13px;font-weight:700;letter-spacing:0.1em;cursor:pointer;backdrop-filter:blur(6px);white-space:nowrap" style-hover="background:#d4b483;color:#1a1215">SHUFFLE THE MOMENTS ↻</button>
+      </div>
+    </div>
+  </section>
+
+  <section data-theme="light" style="position:relative;overflow:hidden;background-color:#f6efe7;background-image:url(assets/grain-light.svg);color:#1a1215">
+    <div style="position:absolute;inset:22px;border:1px solid #c9a46a59;pointer-events:none"><span style="position:absolute;left:-4px;top:-4px;width:7px;height:7px;transform:rotate(45deg);background:#d4b483"></span><span style="position:absolute;right:-4px;top:-4px;width:7px;height:7px;transform:rotate(45deg);background:#d4b483"></span><span style="position:absolute;left:-4px;bottom:-4px;width:7px;height:7px;transform:rotate(45deg);background:#d4b483"></span><span style="position:absolute;right:-4px;bottom:-4px;width:7px;height:7px;transform:rotate(45deg);background:#d4b483"></span></div>
+    <div style="position:absolute;width:70vw;height:70vw;right:-25vw;top:-30vw;border-radius:999px;background:radial-gradient(#d4b48352,transparent 62%);pointer-events:none"></div>
+    <div style="position:relative;max-width:1440px;margin:0 auto;padding:120px 28px 110px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:64px;align-items:stretch">
+      <div style="display:flex;flex-direction:column;gap:30px;justify-content:center">
+        <div data-reveal="1" style="display:flex;flex-direction:column;gap:16px">
+          <div style="font-size:12px;font-weight:600;letter-spacing:0.24em;color:#7a2944;display:flex;align-items:center;gap:12px"><span style="width:28px;height:1px;background:#7a2944"></span><span style="width:6px;height:6px;transform:rotate(45deg);background:#7a2944"></span>MADE TO ORDER</div>
+          <h2 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(52px,5.6vw,92px);line-height:0.92;margin:0">Want a <span style="font-style:italic;color:#7a2944">personalised</span> design?</h2>
+          <p style="font-size:16px;line-height:1.65;margin:0;color:#5c4e48;max-width:460px">Pick a motif and a base colour. We will paint it by hand, just for you.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <span style="font-size:11px;font-weight:700;letter-spacing:0.18em;color:#5c4e48">1 · CHOOSE A MOTIF</span>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:10px">
+            <sc-for list="{{ motifs }}" as="m" hint-placeholder-count="7">
+              <button onClick="{{ m.pick }}" onMouseEnter="{{ m.hov }}" onMouseLeave="{{ m.unhov }}" style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 6px 12px;border-radius:10px;border:1px solid {{ m.border }};background:{{ m.bg }};cursor:pointer;font-family:inherit;transition:all 300ms;box-shadow:{{ m.shadow }}">
+                <img src="{{ m.icon }}" alt="" style="width:44px;height:44px;display:block;transition:transform 600ms cubic-bezier(.34,1.56,.64,1);transform:{{ m.iconT }}"></img>
+                <span style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:{{ m.col }}">{{ m.name }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <span style="font-size:11px;font-weight:700;letter-spacing:0.18em;color:#5c4e48">2 · CHOOSE A BASE COLOUR</span>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+            <sc-for list="{{ colours }}" as="c" hint-placeholder-count="6">
+              <button onClick="{{ c.pick }}" aria-label="{{ c.name }}" title="{{ c.name }}" style="width:42px;height:42px;border-radius:999px;border:1px solid #1a121526;background:{{ c.hex }};cursor:pointer;box-shadow:0 0 0 {{ c.ringW }} #f6efe7, 0 0 0 {{ c.ringW2 }} #7a2944;transition:box-shadow 250ms"></button>
+            </sc-for>
+            <span style="font-size:14px;color:#5c4e48;margin-left:6px">{{ colourName }}</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <span style="font-size:11px;font-weight:700;letter-spacing:0.18em;color:{{ notesLabelCol }};transition:color 300ms">{{ notesLabel }}</span>
+          <textarea ref="{{ notesRef }}" value="{{ notes }}" onChange="{{ setNotes }}" rows="{{ notesRows }}" placeholder="{{ notesPh }}" style="width:100%;font-family:inherit;font-size:15px;line-height:1.55;padding:16px 18px;border-radius:8px;border:1.5px solid {{ notesBorder }};background:#fbf7f1;color:#1a1215;resize:vertical;outline:none;transition:border-color 300ms, box-shadow 400ms;box-shadow:{{ notesShadow }}"></textarea>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a href="{{ waLink }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:16px 26px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:0.08em;box-shadow:0 12px 30px #25d36640" style-hover="color:#fff;filter:brightness(1.08)"><img src="https://cdn.simpleicons.org/whatsapp/ffffff" alt="" style="width:18px;height:18px"></img>REQUEST ON WHATSAPP</a>
+            <a href="https://www.facebook.com/foring.nefertiti" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;border:1px solid #1a121533;padding:16px 22px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:0.08em" style-hover="background:#0084FF;border-color:#0084FF;color:#fff"><img src="https://cdn.simpleicons.org/messenger/0084FF" alt="" style="width:18px;height:18px"></img>MESSENGER</a>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px 26px;font-size:11px;font-weight:700;letter-spacing:0.16em;color:#5c4e48;margin-top:6px">
+            <span style="display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;transform:rotate(45deg);background:#c9a46a"></span>PAINTED BY HAND</span>
+            <span style="display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;transform:rotate(45deg);background:#c9a46a"></span>CASH ON DELIVERY</span>
+            <a href="Shop.dc.html" style="display:flex;align-items:center;gap:8px;color:#7a2944">PREFER READY-MADE? SHOP NOW →</a>
+          </div>
+        </div>
+      </div>
+      <div style="position:relative;min-height:560px;height:100%;border-radius:8px;overflow:hidden;background:#2a1f1c;box-shadow:0 40px 90px #1a121540,0 0 0 1px #c9a46a80,0 0 0 9px #f6efe7,0 0 0 10px #c9a46a59">
+        <sc-for list="{{ motifs }}" as="m" hint-placeholder-count="0">
+          <img src="{{ m.src }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ m.pos }};transition:opacity 700ms, transform 1600ms cubic-bezier(.2,.7,.2,1);opacity:{{ m.o }};transform:scale({{ m.s }})"></img>
+        </sc-for>
+        <span style="position:absolute;inset:0;background:linear-gradient(0deg,#1a1215cc 0%,#1a121500 50%);pointer-events:none"></span>
+      </div>
+    </div>
+  </section>
+
+  <footer data-theme="dark" style="position:relative;overflow:hidden;background-color:#1a1215;background-image:url(assets/grain-dark.svg);color:#f6efe7">
+    <div style="height:28px;background:url(assets/kantha-gold.svg) repeat-x center/64px 28px;opacity:0.35"></div>
+    <img src="assets/alpana-gold.svg" alt="" style="position:absolute;width:640px;height:640px;right:-200px;top:-160px;opacity:0.06;pointer-events:none"></img>
+    <div style="position:relative;max-width:1440px;margin:0 auto;padding:80px 28px 32px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:48px;padding-bottom:64px">
+        <div style="display:flex;flex-direction:column;gap:22px;grid-column:span 2;min-width:0">
+          <a href="Home.dc.html" style="display:flex;align-items:center;gap:14px">
+            <img src="assets/logo.jpg" alt="Nefertiti logo" style="width:60px;height:60px;border-radius:999px;object-fit:cover;box-shadow:0 0 0 1px #d4b48380,0 0 0 5px #1a1215,0 0 0 6px #d4b48340"></img>
+            <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:34px;line-height:1">Nefertiti</span>
+          </a>
+          <div style="font-family:'Instrument Serif',serif;font-size:clamp(34px,3.4vw,52px);line-height:1;max-width:520px">Painted by hand, <span style="font-style:italic;color:#d4b483">made for you.</span></div>
+          <div style="display:flex;gap:10px">
+            <a href="https://www.facebook.com/foring.nefertiti" target="_blank" rel="noopener" aria-label="Facebook" style="width:44px;height:44px;border-radius:999px;border:1px solid #d4b48359;display:flex;align-items:center;justify-content:center;transition:all 250ms" style-hover="background:#1877F2;border-color:#1877F2"><img src="https://cdn.simpleicons.org/facebook/f6efe7" alt="" style="width:17px;height:17px"></img></a>
+            <a href="#" aria-label="Instagram" style="width:44px;height:44px;border-radius:999px;border:1px solid #d4b48359;display:flex;align-items:center;justify-content:center;transition:all 250ms" style-hover="background:#E4405F;border-color:#E4405F"><img src="https://cdn.simpleicons.org/instagram/f6efe7" alt="" style="width:17px;height:17px"></img></a>
+            <a href="#" aria-label="WhatsApp" style="width:44px;height:44px;border-radius:999px;border:1px solid #d4b48359;display:flex;align-items:center;justify-content:center;transition:all 250ms" style-hover="background:#25D366;border-color:#25D366"><img src="https://cdn.simpleicons.org/whatsapp/f6efe7" alt="" style="width:17px;height:17px"></img></a>
+            <a href="https://www.facebook.com/foring.nefertiti" target="_blank" rel="noopener" aria-label="Messenger" style="width:44px;height:44px;border-radius:999px;border:1px solid #d4b48359;display:flex;align-items:center;justify-content:center;transition:all 250ms" style-hover="background:#0084FF;border-color:#0084FF"><img src="https://cdn.simpleicons.org/messenger/f6efe7" alt="" style="width:17px;height:17px"></img></a>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:14px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.2em;color:#d4b483;display:flex;align-items:center;gap:10px;margin-bottom:6px"><span style="width:6px;height:6px;transform:rotate(45deg);background:#d4b483;flex:none"></span>SHOP</div>
+          <a href="Shop.dc.html?cat=Sarees">Sarees</a><a href="Shop.dc.html?cat=Panjabi">Panjabi</a><a href="Shop.dc.html?cat=Family">Family set</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:14px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.2em;color:#d4b483;display:flex;align-items:center;gap:10px;margin-bottom:6px"><span style="width:6px;height:6px;transform:rotate(45deg);background:#d4b483;flex:none"></span>HELP</div>
+          <a href="#">Delivery</a><a href="#">Returns &amp; exchange</a><a href="#">Privacy</a>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12px;color:#cbbfb3;padding-top:24px;border-top:1px solid #d4b48333">
+        <span>© 2026 নেফারতিতি - Nefertiti</span><span style="display:flex;align-items:center;gap:10px"><span style="width:6px;height:6px;transform:rotate(45deg);background:#d4b483;flex:none"></span>Cash on delivery across Bangladesh</span>
+      </div>
+    </div>
+  </footer>
+
+  <div style="position:fixed;left:50%;bottom:28px;z-index:40;transform:translate(-50%,{{ toastY }});opacity:{{ toastO }};transition:all 400ms cubic-bezier(.2,.7,.2,1);background:#f6efe7;color:#1a1215;padding:14px 22px;border-radius:999px;font-size:14px;font-weight:700;display:flex;gap:14px;align-items:center;pointer-events:{{ toastPe }};box-shadow:0 16px 48px #00000059">
+    <span>{{ toastText }}</span><a href="Shop.dc.html" style="color:#7a2944;text-decoration:underline">View cart</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const PRODUCTS = [
+  { id: 'golapi', name: 'Golapi Joba', bn: 'গোলাপি জবা', cat: 'Sarees', fabric: 'Hand-painted', price: 1650, src: 'assets/saree-pink-painted.png' },
+  { id: 'surjomukhi', name: 'Surjomukhi', bn: 'সূর্যমুখী', cat: 'Sarees', fabric: 'Hand-painted', price: 1650, src: 'assets/p-surjomukhi.jpg' },
+  { id: 'podma', name: 'Podma', bn: 'পদ্ম', cat: 'Sarees', fabric: 'Hand-painted', price: 1650, src: 'assets/p-podma.jpg' },
+  { id: 'kalo-surjo', name: 'Kalo Surjo', bn: 'কালো সূর্য', cat: 'Sarees', fabric: 'Hand-painted', price: 1650, src: 'assets/p-kalo-surjo.jpg' },
+  { id: 'shapla', name: 'Shapla', bn: 'শাপলা', cat: 'Sarees', fabric: 'Cotton', price: 1650, src: 'assets/p-shapla.jpg' },
+  { id: 'kumudini', name: 'Kumudini', bn: 'কুমুদিনী', cat: 'Sarees', fabric: 'Hand-painted', price: 1650, src: 'assets/p-kumudini.jpg' },
+  { id: 'akash', name: 'Akash', bn: 'আকাশ', cat: 'Sarees', fabric: 'Handloom', price: 1650, src: 'assets/p-akash.jpg' },
+  { id: 'champa', name: 'Champa', bn: 'চাঁপা', cat: 'Sarees', fabric: 'Cotton', price: 1650, src: 'assets/p-champa.jpg' },
+  { id: 'gada', name: 'Gada', bn: 'গাঁদা', cat: 'Sarees', fabric: 'Block print', price: 1650, src: 'assets/p-gada.jpg' },
+  { id: 'holud', name: 'Holud Panjabi', bn: 'হলুদ পাঞ্জাবি', cat: 'Panjabi', fabric: 'Cotton', price: 1500, src: 'assets/p-holud.jpg' },
+  { id: 'mayur', name: 'Mayur Panjabi', bn: 'ময়ূর পাঞ্জাবি', cat: 'Panjabi', fabric: 'Cotton', price: 1500, src: 'assets/p-mayur.jpg' },
+];
+const PANELS = [{ id: 'podma', pos: '50% 30%' }, { id: 'surjomukhi', pos: '50% 20%' }, { id: 'golapi', pos: '50% 30%' }, { id: 'champa', pos: '50% 25%' }, { id: 'kumudini', pos: '50% 40%' }];
+const MANIFESTO = 'Hand paint saree, unique design, affordable price in high quality.';
+const ACCENT = { 'unique': 1, 'design,': 1 };
+const MOMENTS = [
+  { src: 'assets/p-kalo-surjo.jpg', name: 'Kalo Surjo', tag: 'MOTHER & SON' }, { src: 'assets/p-mayur.jpg', name: 'Mayur', tag: 'COUPLE SET' },
+  { src: 'assets/group.jpg', name: 'Friends', tag: 'GROUP ORDER' }, { src: 'assets/p-holud.jpg', name: 'Holud', tag: 'COUPLE SET' },
+  { src: 'assets/p-akash.jpg', name: 'Akash', tag: 'ABROAD' }, { src: 'assets/p-gada.jpg', name: 'Gada', tag: 'PHOTOSHOOT' },
+  { src: 'assets/water.jpg', name: 'Shapla', tag: 'PHOTOSHOOT' }, { src: 'assets/p-kumudini.jpg', name: 'Kumudini', tag: 'SAREE' },
+  { src: 'assets/p-champa.jpg', name: 'Champa', tag: 'SAREE' },
+];
+const SLOTS = [[3, 6], [22, 0], [41, 8], [60, 2], [79, 9], [6, 50], [27, 45], [50, 52], [72, 46]];
+const fmt = n => '৳ ' + n.toLocaleString('en-IN');
+const byId = id => PRODUCTS.find(p => p.id === id);
+const loadCart = () => { try { return JSON.parse(localStorage.getItem('nef-cart') || '{}'); } catch (e) { return {}; } };
+class Component extends DCLogic {
+  cursorRef = React.createRef(); notesRef = React.createRef(); arrRef = React.createRef(); manifestoRef = React.createRef(); studioRef = React.createRef(); momentsRef = React.createRef();
+  state = { panel: 0, heroHover: false, tab: 'All', cart: loadCart(), hover: null, sel: null, toast: null, spread: false, mHover: null, mOrder: null, mRots: null,
+    intro: (() => { try { return !sessionStorage.getItem('nef-intro'); } catch (e) { return false; } })(), introIn: false, introOut: false };
+  componentDidMount() {
+    if (this.state.intro) {
+      requestAnimationFrame(() => this.setState({ introIn: true }));
+      this.it = setTimeout(() => { this.setState({ introOut: true }); try { sessionStorage.setItem('nef-intro', '1'); } catch (e) {} }, 1700);
+    }
+    this.timer = setInterval(() => { if (!this.state.heroHover) this.setState(s => ({ panel: (s.panel + 1) % PANELS.length })); }, 4200);
+    this.onMove = e => { const el = this.cursorRef.current; if (el) { el.style.left = e.clientX + 'px'; el.style.top = e.clientY + 'px'; } };
+    window.addEventListener('mousemove', this.onMove, { passive: true });
+    let ticking = false;
+    this.onScroll = () => { if (ticking) return; ticking = true; requestAnimationFrame(() => { ticking = false; this.scrollFx(); }); };
+    window.addEventListener('scroll', this.onScroll, { passive: true }); window.addEventListener('resize', this.onScroll);
+    setTimeout(() => this.setupReveal(), 60);
+    this.scrollFx(); this.setupStudio();
+    if (this.arrRef.current && 'IntersectionObserver' in window) { this.aOb = new IntersectionObserver(en => { if (en[0].isIntersecting) { this.setState({ arrIn: true }); this.aOb.disconnect(); } }, { threshold: 0.4 }); this.aOb.observe(this.arrRef.current); } else this.setState({ arrIn: true });
+    if (this.momentsRef.current && 'IntersectionObserver' in window) { this.mOb = new IntersectionObserver(en => { if (en[0].isIntersecting) { this.setState({ spread: true }); this.mOb.disconnect(); } }, { threshold: 0.25 }); this.mOb.observe(this.momentsRef.current); } else this.setState({ spread: true });
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer); clearTimeout(this.it); clearTimeout(this.tt); cancelAnimationFrame(this.studioRaf);
+    window.removeEventListener('mousemove', this.onMove); window.removeEventListener('scroll', this.onScroll); window.removeEventListener('resize', this.onScroll); window.removeEventListener('resize', this.onStudioResize);
+    this.io && this.io.disconnect(); this.studioOb && this.studioOb.disconnect(); this.mOb && this.mOb.disconnect();
+  }
+  setupReveal() {
+    if (!('IntersectionObserver' in window)) return;
+    const els = document.querySelectorAll('[data-reveal]');
+    this.io = new IntersectionObserver(entries => entries.forEach(en => { if (en.isIntersecting) { en.target.style.opacity = '1'; en.target.style.transform = 'none'; this.io.unobserve(en.target); } }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach((el, i) => {
+      const r = el.getBoundingClientRect();
+      el.style.transition = 'opacity 1000ms ease, transform 1100ms cubic-bezier(.2,.7,.2,1)';
+      if (r.top < innerHeight * 0.9) { el.style.transitionDelay = (this.state.intro ? 1500 : 0) + (i % 5) * 90 + 'ms'; el.style.opacity = '0'; el.style.transform = 'translateY(40px)'; requestAnimationFrame(() => requestAnimationFrame(() => { el.style.opacity = '1'; el.style.transform = 'none'; })); return; }
+      el.style.opacity = '0'; el.style.transform = 'translateY(56px)'; this.io.observe(el);
+    });
+  }
+  scrollFx() {
+    document.querySelectorAll('[data-parallax]').forEach(el => { const r = el.parentElement.getBoundingClientRect(); const off = (r.top + r.height / 2 - innerHeight / 2) * parseFloat(el.getAttribute('data-parallax')); el.style.transform = 'translate3d(0,' + (-off).toFixed(1) + 'px,0)'; });
+    const m = this.manifestoRef.current;
+    if (m) {
+      const r = m.getBoundingClientRect(); const p = Math.min(1, Math.max(0, (innerHeight * 0.85 - r.top) / (r.height * 0.5)));
+      const ws = m.querySelectorAll('[data-w]'); const n = ws.length;
+      ws.forEach((w, i) => {
+        const v = p * n * 1.15 - i, o = Math.min(1, Math.max(0.14, v)), g = v <= 0 ? 0 : v < 1 ? v : Math.max(0, 1 - (v - 1) / 1.6);
+        w.style.opacity = o.toFixed(2);
+        w.style.textShadow = g > 0.02 ? '0 0 ' + (10 + 30 * g).toFixed(0) + 'px rgba(232,207,156,' + (0.85 * g).toFixed(2) + '), 0 0 ' + (4 + 8 * g).toFixed(0) + 'px rgba(255,240,210,' + (0.6 * g).toFixed(2) + ')' : 'none';
+        w.style.filter = v < 1 ? 'blur(' + ((1 - Math.max(0, v)) * 5).toFixed(1) + 'px)' : 'none';
+        w.style.transform = v < 1 ? 'translateY(' + ((1 - Math.max(0, v)) * 14).toFixed(1) + 'px)' : 'none';
+      });
+    }
+  }
+  buildAmbient() {
+    const E = React.createElement;
+    const blob = (k, c, pos, dur, del) => E('div', { key: k, style: { position: 'absolute', width: '60vw', height: '60vw', ...pos, borderRadius: '999px', background: 'radial-gradient(circle, ' + c + ' 0%, transparent 62%)', filter: 'blur(40px)', animation: 'nefDrift ' + dur + 's ease-in-out ' + del + 's infinite alternate' } });
+    return E('div', { style: { position: 'absolute', inset: 0 } }, [
+      blob('b1', 'rgba(212,180,131,0.28)', { left: '-22vw', top: '-25vw' }, 22, 0),
+      blob('b2', 'rgba(170,70,105,0.30)', { right: '-25vw', bottom: '-30vw' }, 26, -8),
+      blob('b3', 'rgba(110,140,80,0.18)', { left: '30vw', top: '10vw' }, 30, -14),
+    ]);
+  }
+  setupStudio() {
+    const cv = this.studioRef.current; if (!cv) return;
+    const W = 800, H = 350, S = 0.6;
+    const PAL = [['#b8325f', '#f2b3c6'], ['#c4860f', '#f6d977'], ['#b8325f', '#f2b3c6'], ['#2f6fa8', '#a9d0f0'], ['#b8325f', '#f2b3c6']];
+    const DISH = { '#b8325f': [560, 326], '#c4860f': [628, 330], '#2f6fa8': [696, 326], green: [492, 330] };
+    const green = ['#4f7a2e', '#a9c66b'], els = [];
+    [96, 248, 400, 552, 704].forEach((cx, i) => {
+      const cy = 136, pal = PAL[i], at = (x, y) => [cx + x * S, cy + y * S];
+      const P = (b, t, w, col, d) => ({ k: 'petal', b: at(...b), t: at(...t), w: w * S, col, d: d || 0.42 });
+      els.push({ k: 'dip', dish: DISH.green, c: '#5f8a35', d: 0.85 });
+      els.push({ k: 'stem', pts: [at(0, 190), at(-4, 140), at(4, 70), at(0, 6)], w: 4.2, col: '#6b8c3e', d: 0.55 });
+      els.push(P([0, 140], [-84, 106], 28, green), P([2, 160], [80, 132], 25, green));
+      els.push({ k: 'dip', dish: DISH[pal[0]], c: pal[0], d: 0.85 });
+      els.push(P([0, 0], [-60, -4], 17, pal), P([0, 0], [60, -4], 17, pal), P([-2, 2], [-48, -92], 23, pal), P([2, 2], [48, -92], 23, pal), P([0, 0], [0, -118], 24, pal, 0.5));
+    });
+    const total = els.reduce((a, x) => a + x.d, 0), HOLD = 2.8, FADE = 1.2;
+    const geo = e => { const [bx, by] = e.b, [tx, ty] = e.t, dx = tx - bx, dy = ty - by, L = Math.hypot(dx, dy); return { bx, by, tx, ty, dx, dy, nx: -dy / L, ny: dx / L }; };
+    const pathPetal = (ctx, e) => { const { bx, by, tx, ty, dx, dy, nx, ny } = geo(e), w = e.w; ctx.beginPath(); ctx.moveTo(bx, by); ctx.bezierCurveTo(bx + nx * w + dx * 0.25, by + ny * w + dy * 0.25, tx + nx * w * 0.55 - dx * 0.12, ty + ny * w * 0.55 - dy * 0.12, tx, ty); ctx.bezierCurveTo(tx - nx * w * 0.55 - dx * 0.12, ty - ny * w * 0.55 - dy * 0.12, bx - nx * w + dx * 0.25, by - ny * w + dy * 0.25, bx, by); };
+    const petalPt = (e, t) => { const { bx, by, dx, dy, nx, ny } = geo(e); const wob = Math.sin(t * Math.PI * 5) * e.w * 0.55 * Math.sin(t * Math.PI); return [bx + dx * t + nx * wob, by + dy * t + ny * wob]; };
+    const stemPt = (e, t) => { const p = e.pts, u = 1 - t; return [u*u*u*p[0][0] + 3*u*u*t*p[1][0] + 3*u*t*t*p[2][0] + t*t*t*p[3][0], u*u*u*p[0][1] + 3*u*u*t*p[1][1] + 3*u*t*t*p[2][1] + t*t*t*p[3][1]]; };
+    const ptAt = (e, t) => e.k === 'stem' ? stemPt(e, t) : petalPt(e, t);
+    const drawEl = (ctx, e, t) => {
+      if (t <= 0) return;
+      if (e.k === 'stem') { ctx.strokeStyle = e.col; ctx.lineWidth = e.w; ctx.lineCap = 'round'; ctx.beginPath(); for (let i = 0; i <= 40 * t; i++) { const [x, y] = stemPt(e, i / 40); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.stroke(); return; }
+      ctx.save(); pathPetal(ctx, e); ctx.clip();
+      const g = ctx.createLinearGradient(e.b[0], e.b[1], e.t[0], e.t[1]); g.addColorStop(0, e.col[0]); g.addColorStop(1, e.col[1]);
+      ctx.strokeStyle = g; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = e.w * 1.5; ctx.globalAlpha = 0.92; ctx.beginPath();
+      const n = Math.max(2, Math.round(50 * t)); for (let i = 0; i <= n; i++) { const [x, y] = petalPt(e, (i / n) * t); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.stroke();
+      ctx.globalAlpha = 0.22; ctx.lineWidth = 0.8; ctx.strokeStyle = e.col[0]; const { bx, by, dx, dy, nx, ny } = geo(e);
+      for (let k = -3; k <= 3; k++) { const o = k * e.w * 0.22; ctx.beginPath(); ctx.moveTo(bx + nx * o * 0.3, by + ny * o * 0.3); ctx.quadraticCurveTo(bx + dx * 0.5 * t + nx * o, by + dy * 0.5 * t + ny * o, bx + dx * t + nx * o * 0.4, by + dy * t + ny * o * 0.4); ctx.stroke(); }
+      ctx.restore();
+      if (t >= 1) { ctx.save(); pathPetal(ctx, e); ctx.globalAlpha = 0.5; ctx.strokeStyle = e.col[0]; ctx.lineWidth = 0.8; ctx.stroke(); ctx.restore(); }
+    };
+    const edgeY = x => 292 + Math.sin(x / 30) * 2.5;
+    const clothPath = ctx => { ctx.beginPath(); ctx.moveTo(-5, -5); ctx.lineTo(805, -5); for (let x = 805; x >= -5; x -= 8) ctx.lineTo(x, edgeY(x)); ctx.closePath(); };
+    const scene = ctx => {
+      const wood = ctx.createLinearGradient(0, 280, 0, H); wood.addColorStop(0, '#2c1d14'); wood.addColorStop(1, '#3d2a1d'); ctx.fillStyle = wood; ctx.fillRect(0, 0, W, H);
+      ctx.globalAlpha = 0.14; ctx.strokeStyle = '#120a06'; ctx.lineWidth = 1; for (let y = 292; y < H; y += 5) { ctx.beginPath(); ctx.moveTo(0, y); ctx.bezierCurveTo(250, y + 2, 550, y - 2, W, y + 1); ctx.stroke(); } ctx.globalAlpha = 1;
+      Object.entries(DISH).forEach(([c, [x, y]]) => {
+        ctx.save(); ctx.shadowColor = 'rgba(0,0,0,0.45)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 4; ctx.fillStyle = '#efe9e0'; ctx.beginPath(); ctx.ellipse(x, y, 26, 13, 0, 0, 7); ctx.fill(); ctx.restore();
+        ctx.fillStyle = '#d9d1c4'; ctx.beginPath(); ctx.ellipse(x, y + 1, 20, 9, 0, 0, 7); ctx.fill();
+        ctx.fillStyle = c === 'green' ? '#5f8a35' : c; ctx.beginPath(); ctx.ellipse(x, y + 2, 16, 7, 0, 0, 7); ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.beginPath(); ctx.ellipse(x - 6, y, 5, 2, -0.2, 0, 7); ctx.fill();
+      });
+      ctx.save(); ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 16; ctx.shadowOffsetY = 6; clothPath(ctx); ctx.fillStyle = '#f4ede3'; ctx.fill(); ctx.restore();
+      ctx.save(); clothPath(ctx); ctx.clip();
+      const folds = ctx.createLinearGradient(0, 0, W, 120); [[0, 'rgba(120,90,70,0.10)'], [0.14, 'rgba(255,255,255,0.14)'], [0.3, 'rgba(120,90,70,0.10)'], [0.46, 'rgba(255,255,255,0.12)'], [0.62, 'rgba(120,90,70,0.10)'], [0.8, 'rgba(255,255,255,0.12)'], [1, 'rgba(120,90,70,0.10)']].forEach(([o, c]) => folds.addColorStop(o, c));
+      ctx.fillStyle = folds; ctx.fillRect(0, 0, W, H);
+      ctx.globalAlpha = 0.045; ctx.strokeStyle = '#6b5a48'; ctx.lineWidth = 0.5;
+      for (let y = 0; y < 300; y += 2.2) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y + 0.6); ctx.stroke(); }
+      for (let x = 0; x < W; x += 2.6) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x + 0.4, 300); ctx.stroke(); }
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = '#7a2944'; ctx.fillRect(0, 0, W, 46); ctx.fillStyle = '#d4b483'; [4, 8, 38, 42].forEach(y => ctx.fillRect(0, y, W, 1.4));
+      for (let x = 0; x < W; x += 18) { ctx.beginPath(); ctx.moveTo(x, 13); ctx.lineTo(x + 14, 13); ctx.lineTo(x + 7, 31); ctx.closePath(); ctx.fill(); ctx.beginPath(); ctx.arc(x + 16, 22, 1.6, 0, 7); ctx.fill(); }
+      ctx.globalAlpha = 0.35; ctx.strokeStyle = '#7a2944'; ctx.lineWidth = 1; ctx.setLineDash([4, 5]);
+      [172, 324, 476, 628].forEach(x => { ctx.beginPath(); ctx.moveTo(x, 62); ctx.lineTo(x, 236); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x, 54); ctx.lineTo(x + 4, 58); ctx.lineTo(x, 62); ctx.lineTo(x - 4, 58); ctx.closePath(); ctx.stroke(); });
+      ctx.setLineDash([]); ctx.globalAlpha = 1;
+      ctx.fillStyle = '#7a2944'; ctx.fillRect(0, 248, W, 50); ctx.fillStyle = '#d4b483'; [251, 255, 284, 288].forEach(y => ctx.fillRect(0, y, W, 1.4));
+      for (let x = 4; x < W; x += 16) { ctx.beginPath(); ctx.moveTo(x, 269.5); ctx.lineTo(x + 6, 262); ctx.lineTo(x + 12, 269.5); ctx.lineTo(x + 6, 277); ctx.closePath(); ctx.fill(); }
+      ctx.restore();
+      ctx.strokeStyle = '#c9a15f'; ctx.lineWidth = 1.2; ctx.lineCap = 'round';
+      for (let x = 2; x < W; x += 5) { const y0 = edgeY(x), len = 13 + Math.sin(x * 1.7) * 3; ctx.beginPath(); ctx.moveTo(x, y0); ctx.quadraticCurveTo(x + Math.sin(x) * 2, y0 + len * 0.6, x + Math.sin(x * 0.7) * 2.5, y0 + len); ctx.stroke(); }
+    };
+    const lg = (ctx, x0, x1, stops) => { const g = ctx.createLinearGradient(x0, 0, x1, 0); stops.forEach(([o, c]) => g.addColorStop(o, c)); return g; };
+    const drawBrush = (ctx, x, y, col, lift) => {
+      ctx.save(); ctx.translate(x, y); ctx.rotate(0.55);
+      ctx.save(); ctx.globalAlpha = 0.28 * (1 - lift * 0.5); ctx.fillStyle = '#000'; ctx.filter = 'blur(5px)'; ctx.translate(14 + lift * 10, 10 + lift * 10); ctx.beginPath(); ctx.moveTo(-4, -40); ctx.lineTo(-3, -250); ctx.lineTo(3, -250); ctx.lineTo(4, -40); ctx.lineTo(0, 0); ctx.closePath(); ctx.fill(); ctx.restore();
+      ctx.fillStyle = lg(ctx, -5, 5, [[0, '#6b3f1c'], [0.28, '#c89058'], [0.42, '#f1cf9c'], [0.55, '#c48a50'], [1, '#5a3315']]);
+      ctx.beginPath(); ctx.moveTo(-4.6, -50); ctx.bezierCurveTo(-4.2, -120, -3, -190, -3.4, -238); ctx.lineTo(3.4, -238); ctx.bezierCurveTo(3, -190, 4.2, -120, 4.6, -50); ctx.closePath(); ctx.fill();
+      ctx.save(); ctx.clip(); ctx.globalAlpha = 0.25; ctx.strokeStyle = '#5a3315'; ctx.lineWidth = 0.5; for (let i = -3; i <= 3; i++) { ctx.beginPath(); ctx.moveTo(i * 1.2, -50); ctx.bezierCurveTo(i * 1.4 + 0.6, -110, i * 0.9 - 0.5, -170, i * 0.8, -238); ctx.stroke(); } ctx.restore();
+      ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(-1.8, -60); ctx.bezierCurveTo(-1.6, -120, -1.2, -180, -1.3, -230); ctx.stroke();
+      ctx.fillStyle = lg(ctx, -4, 4, [[0, '#8a6a2c'], [0.45, '#f6e2a8'], [1, '#7a5a20']]); ctx.fillRect(-3.5, -246, 7, 8);
+      ctx.fillStyle = lg(ctx, -4, 4, [[0, '#000'], [0.45, '#3a3436'], [1, '#000']]); ctx.beginPath(); ctx.moveTo(-3.4, -246); ctx.lineTo(-2.6, -276); ctx.quadraticCurveTo(0, -282, 2.6, -276); ctx.lineTo(3.4, -246); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = lg(ctx, -5, 5, [[0, '#6d7278'], [0.3, '#d9dde1'], [0.42, '#ffffff'], [0.6, '#b5bbc1'], [1, '#5d6268']]); ctx.beginPath(); ctx.moveTo(-4, -30); ctx.lineTo(-4.8, -52); ctx.lineTo(4.8, -52); ctx.lineTo(4, -30); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = 'rgba(40,40,45,0.55)'; ctx.lineWidth = 0.6; [-36, -39.5, -43].forEach(yy => { ctx.beginPath(); ctx.moveTo(-4.3, yy); ctx.lineTo(4.3, yy); ctx.stroke(); });
+      const bg = ctx.createLinearGradient(0, -31, 0, 0); bg.addColorStop(0, '#c9a27a'); bg.addColorStop(0.4, '#8a6440'); bg.addColorStop(0.62, col); bg.addColorStop(1, col);
+      ctx.fillStyle = bg; ctx.beginPath(); ctx.moveTo(-4, -30.5); ctx.bezierCurveTo(-5.2, -19, -2.2, -7, 0, 0.8); ctx.bezierCurveTo(2.2, -7, 5.2, -19, 4, -30.5); ctx.closePath(); ctx.fill();
+      ctx.save(); ctx.clip(); ctx.strokeStyle = 'rgba(30,18,10,0.35)'; ctx.lineWidth = 0.35; for (let i = -4; i <= 4; i++) { ctx.beginPath(); ctx.moveTo(i * 1.05, -30); ctx.quadraticCurveTo(i * 1.3, -14, i * 0.2, -1); ctx.stroke(); } ctx.restore();
+      ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.lineWidth = 0.9; ctx.beginPath(); ctx.moveTo(-1.6, -14); ctx.quadraticCurveTo(-1.2, -7, -0.3, -2); ctx.stroke();
+      ctx.fillStyle = col; ctx.beginPath(); ctx.arc(0, 0.4, 1.1, 0, 7); ctx.fill();
+      ctx.restore();
+    };
+    const fit = () => { const d = Math.min(2, devicePixelRatio || 1), r = cv.getBoundingClientRect(); cv.width = r.width * d; cv.height = r.height * d; this.studioScale = (r.width * d) / W; };
+    fit(); this.onStudioResize = fit; window.addEventListener('resize', fit);
+    const ctx = cv.getContext('2d'); let t0 = performance.now(), visible = true;
+    if ('IntersectionObserver' in window) { this.studioOb = new IntersectionObserver(en => { visible = en[0].isIntersecting; }); this.studioOb.observe(cv); }
+    const startOf = i => { for (let j = i; j < els.length; j++) if (els[j].k !== 'dip') return ptAt(els[j], 0); return [740, 80]; };
+    const endOf = i => i < 0 ? [740, 80] : els[i].k === 'dip' ? startOf(i + 1) : ptAt(els[i], 1);
+    const frame = now => {
+      this.studioRaf = requestAnimationFrame(frame); if (!visible) return;
+      const sc = this.studioScale || 1; ctx.setTransform(sc, 0, 0, sc, 0, 0);
+      let el = (now - t0) / 1000; if (el > total + HOLD + FADE) { t0 = now; el = 0; }
+      scene(ctx); ctx.globalAlpha = el > total + HOLD ? Math.max(0, 1 - (el - total - HOLD) / FADE) : 1;
+      let acc = 0, bp = null, bcol = '#5f8a35', lift = 0;
+      for (let i = 0; i < els.length; i++) {
+        const e = els[i], local = (el - acc) / e.d;
+        if (e.k === 'dip') {
+          if (local > 0 && local < 1) {
+            const dish = e.dish, prev = endOf(i - 1), next = startOf(i + 1);
+            if (local < 0.45) { const k = local / 0.45, ez = k * k * (3 - 2 * k); bp = [prev[0] + (dish[0] - prev[0]) * ez, prev[1] + (dish[1] - prev[1]) * ez - Math.sin(k * Math.PI) * 40]; lift = Math.sin(k * Math.PI); }
+            else if (local < 0.6) { const k = (local - 0.45) / 0.15; bp = [dish[0] + Math.sin(k * Math.PI * 2) * 4, dish[1] + Math.sin(k * Math.PI) * 3]; bcol = e.c; }
+            else { const k = (local - 0.6) / 0.4, ez = k * k * (3 - 2 * k); bp = [dish[0] + (next[0] - dish[0]) * ez, dish[1] + (next[1] - dish[1]) * ez - Math.sin(k * Math.PI) * 40]; bcol = e.c; lift = Math.sin(k * Math.PI); }
+          }
+        } else if (local >= 1) drawEl(ctx, e, 1);
+        else if (local > 0) { const ez = 1 - Math.pow(1 - local, 2); drawEl(ctx, e, ez); bp = ptAt(e, ez); bcol = e.k === 'stem' ? e.col : e.col[0]; }
+        acc += e.d;
+      }
+      ctx.globalAlpha = 1;
+      if (!bp) { const k = Math.min(1, Math.max(0, el - total) / 0.8), last = endOf(els.length - 1); bp = [last[0] + (760 - last[0]) * k, last[1] + (70 - last[1]) * k]; lift = k; }
+      drawBrush(ctx, bp[0], bp[1], bcol, lift);
+    };
+    this.studioRaf = requestAnimationFrame(frame);
+  }
+  add(p) {
+    const cart = { ...this.state.cart, [p.id]: (this.state.cart[p.id] || 0) + 1 };
+    localStorage.setItem('nef-cart', JSON.stringify(cart));
+    this.setState({ cart, toast: p.name });
+    clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: null }), 2600);
+  }
+  renderVals() {
+    const { panel, tab, cart, hover, sel, toast, intro, introIn, introOut, spread, mHover } = this.state;
+    const list = PRODUCTS.filter(p => p.cat === 'Sarees' && (tab === 'All' || p.fabric === tab)).slice(0, 8);
+    const fi = Math.max(0, list.findIndex(p => p.id === sel)), f = list[fi] || PRODUCTS[0];
+    const ord = this.state.mOrder || MOMENTS.map((_, i) => i), rots = this.state.mRots || [-6, 4, -3, 7, -5, 5, -7, 3, -4];
+    const MOTIFS = [{ k: 'lotus', name: 'Lotus', src: 'assets/p-podma.jpg', pos: '50% 40%' }, { k: 'sunflower', name: 'Sunflower', src: 'assets/p-surjomukhi.jpg', pos: '50% 35%' }, { k: 'hibiscus', name: 'Hibiscus', src: 'assets/saree-pink-painted.png', pos: '50% 45%' }, { k: 'peacock', name: 'Peacock', src: 'assets/p-mayur.jpg', pos: '50% 60%' }, { k: 'leaf', name: 'Leaves', src: 'assets/p-kumudini.jpg', pos: '50% 40%' }, { k: 'paisley', name: 'Paisley', src: 'assets/fabric-closeup.jpg', pos: '50% 50%' }, { k: 'other', name: 'Other', src: 'assets/fabric-closeup.jpg', pos: '30% 60%' }];
+    const COLOURS = [{ name: 'Ivory', hex: '#f5efe2' }, { name: 'Blush pink', hex: '#f2c9d3' }, { name: 'Mint', hex: '#cfe6d6' }, { name: 'Sky blue', hex: '#c6dcef' }, { name: 'Sunshine yellow', hex: '#f4dc7c' }, { name: 'Black', hex: '#1d1a1b' }];
+    const mi = this.state.cMotif || 0, ci = this.state.cColour || 0, M = MOTIFS[mi], C = COLOURS[ci];
+    const line = (M.k === 'other' ? 'My own motif' : M.name) + ' on ' + C.name.toLowerCase() + ' cotton';
+    return {
+      cursorRef: this.cursorRef, manifestoRef: this.manifestoRef, arrRef: this.arrRef,
+      arrLetters: ('New ' + 'arrivals').split('').map((ch, i) => ({ ch, st: i > 3 ? 'italic' : 'normal', col: i > 3 ? '#7a2944' : '#1a1215', d: (i * 55) + 'ms', y: this.state.arrIn ? '0%' : '110%', r: this.state.arrIn ? '0deg' : (i % 2 ? '6deg' : '-6deg'), o: this.state.arrIn ? 1 : 0 })), studioRef: this.studioRef, momentsRef: this.momentsRef,
+      ambient: this.ambientEl || (this.ambientEl = this.buildAmbient()),
+      alpanaSpin: this.alpanaEl || (this.alpanaEl = React.createElement('img', { src: 'assets/alpana-gold.svg', alt: '', style: { width: '100%', height: '100%', display: 'block', animation: 'nefSpin 120s linear infinite' } })),
+      introY: !intro || introOut ? '-100%' : '0%', introPe: !intro || introOut ? 'none' : 'auto',
+      introLogoO: introIn && !introOut ? 1 : 0, introLogoS: introIn ? 1 : 0.6, introTextY: introIn ? '0px' : '30px',
+      cursorScale: hover || mHover !== null ? 1 : 0,
+      heroEnter: () => this.setState({ heroHover: true }), heroLeave: () => this.setState({ heroHover: false }),
+      panels: PANELS.map((pp, i) => { const p = byId(pp.id), a = i === panel; return { ...p, pos: pp.pos, num: String(i + 1).padStart(2, '0'), href: 'Product.dc.html?id=' + p.id, price: fmt(p.price),
+        flex: a ? 6 : 1, glowO: a ? 0.75 : 0, scale: a ? 1 : 1.15, filter: a ? 'none' : 'grayscale(0.6) brightness(0.7)', labelO: a ? 0 : 1, infoO: a ? 1 : 0, infoY: a ? '0px' : '30px', dash: a ? '#d4b483' : '#ffffff33', pick: () => this.setState({ panel: i }) }; }),
+      words: MANIFESTO.split(' ').map(t => ({ t, style: ACCENT[t] ? 'italic' : 'normal', color: ACCENT[t] ? '#d4b483' : '#f6efe7' })),
+      tabs: ['All', 'Hand-painted', 'Handloom', 'Cotton', 'Block print'].map(label => ({ label, bg: label === tab ? '#1a1215' : 'transparent', fg: label === tab ? '#f6efe7' : '#1a1215', border: label === tab ? '#1a1215' : '#1a121533', select: () => this.setState({ tab: label, sel: null }) })),
+      feat: { ...f, href: 'Product.dc.html?id=' + f.id, price: fmt(f.price), fabricUp: f.fabric.toUpperCase() + ' SAREE', add: () => this.add(f) },
+      featIdx: String(fi + 1).padStart(2, '0') + ' / ' + String(list.length).padStart(2, '0'),
+      featImgs: list.map((p, i) => ({ src: p.src, name: p.name, o: i === fi ? 1 : 0, s: i === fi ? 1 : 1.08 })),
+      tiles: list.filter((p, i) => i !== 0).map(p => ({ ...p, price: fmt(p.price), tag: list.indexOf(p) < 3 ? 'NEW' : p.fabric.toUpperCase(),
+        ring: f.id === p.id ? '#c9a46a' : 'transparent', dim: sel && sel !== p.id ? 0.7 : 1, scale: hover === p.id ? 1.08 : 1,
+        go: () => { location.href = 'Product.dc.html?id=' + p.id; }, enter: () => this.setState({ hover: p.id, sel: p.id }), leave: () => this.setState({ hover: null }) })),
+      gridLeave: () => this.setState({ sel: null }),
+      totalCount: PRODUCTS.length,
+      moments: MOMENTS.map((m, i) => { const s = SLOTS[ord[i]], hv = mHover === i; return { ...m,
+        x: spread ? s[0] + '%' : '42%', y: spread ? s[1] + '%' : '24%', rot: hv ? '0deg' : (spread ? rots[i] : (i % 2 ? 3 : -3) * (i % 4)) + 'deg', sc: hv ? 1.12 : 1,
+        z: hv ? 20 : i + 1, delay: spread ? (i * 70) + 'ms' : '0ms', shadow: hv ? '0 40px 80px #000000a6' : '0 18px 40px #00000073',
+        enter: () => this.setState({ mHover: i }), leave: () => this.setState({ mHover: null }) }; }),
+      shuffle: () => { const o = MOMENTS.map((_, i) => i); for (let i = o.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [o[i], o[j]] = [o[j], o[i]]; } this.setState({ mOrder: o, mRots: MOMENTS.map(() => Math.round((Math.random() * 16 - 8) * 10) / 10) }); },
+      motifs: MOTIFS.map((m, i) => { const a = i === mi, hv = this.state.mtHover === i; return { ...m, icon: 'assets/motif-' + m.k + '.svg', border: a ? '#7a2944' : '#c9a46a66', bg: a ? '#ffffff' : '#fbf7f1', shadow: a ? '0 10px 24px #7a294426' : 'none', col: a ? '#7a2944' : '#5c4e48',
+        iconT: hv ? 'rotate(-12deg) scale(1.18)' : a ? 'scale(1.08)' : 'none', o: a ? 1 : 0, s: a ? 1 : 1.08,
+        pick: () => { this.setState({ cMotif: i }); if (m.k === 'other') setTimeout(() => { const t = this.notesRef.current; if (t) t.focus({ preventScroll: true }); }, 60); }, hov: () => this.setState({ mtHover: i }), unhov: () => this.setState({ mtHover: null }) }; }),
+      colours: COLOURS.map((c, i) => ({ ...c, ringW: i === ci ? '3px' : '0px', ringW2: i === ci ? '5px' : '0px', pick: () => this.setState({ cColour: i }) })),
+      colourName: C.name, colourHex: C.hex, motifThumb: 'assets/motif-' + M.k + '.svg', designLine: line,
+      notes: this.state.notes || '', notesRef: this.notesRef,
+      notesLabel: M.k === 'other' ? '3 · DESCRIBE YOUR OWN MOTIF HERE ✎' : '3 · TELL US MORE ABOUT YOUR PERSONALISED DESIGN',
+      notesLabelCol: M.k === 'other' ? '#7a2944' : '#5c4e48', notesRows: M.k === 'other' ? 4 : 3,
+      notesPh: M.k === 'other' ? 'Describe your motif: a flower, a pattern, initials, a picture you love…' : 'Occasion, colours you love, blouse, the date you need it by…',
+      notesBorder: M.k === 'other' ? '#7a2944' : '#c9a46a80', notesShadow: M.k === 'other' ? '0 0 0 5px #7a29441f, 0 14px 30px #7a29441a' : 'none', setNotes: e => this.setState({ notes: e.target.value }),
+      waLink: 'https://wa.me/?text=' + encodeURIComponent('Hi Nefertiti! I would like a personalised hand-painted saree: ' + line + '.' + (this.state.notes ? ' Details: ' + this.state.notes : '')),
+      cartCount: Object.values(cart).reduce((a, b) => a + b, 0),
+      toastText: toast ? toast + ' added to cart' : '', toastY: toast ? '0px' : '120px', toastO: toast ? 1 : 0, toastPe: toast ? 'auto' : 'none',
+    };
+  }
+}
+</script>
+</body>
+</html>
